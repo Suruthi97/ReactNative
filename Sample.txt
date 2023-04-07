@@ -1,0 +1,135 @@
+import React, { useState } from 'react';
+import { StyleSheet, View, Text, Image, ScrollView, TextInput, Button, FlatList, SectionList } from 'react-native';
+
+export default function App() {
+  return (
+    <ScrollView>
+      <View style={styles.viewContainer}>
+        <Text style={{fontWeight:'bold', fontSize:25}}>Image</Text>
+        <Image
+          source={{
+            uri: 'https://reactnative.dev/docs/assets/p_cat2.png',
+          }}
+          style={styles.imageContainer}
+        />
+        <Text style={{fontWeight:'bold', fontSize:25}}>Text Input</Text>
+      <TextInput
+        style={styles.textInputContainer}
+        placeholder="Type something..."
+      />
+      <Text style={{fontWeight:'bold', fontSize:25}}>Props, State</Text>
+      <Cat name="Sanu" />
+      <Cat name="Rathu" />
+      <PizzaTranslator/>
+      <Text style={{fontWeight:'bold', fontSize:25}}>Flat List</Text>
+      <FlatListBasics/>
+      <Text style={{fontWeight:'bold', fontSize:25}}>SectionList</Text>
+      <SectionListBasics/>
+      </View>
+    </ScrollView>
+  );
+}
+
+const Cat = (props) => {
+  const [isHungry, setIsHungry] = useState(true);
+  return (
+    <View>
+      <Text>
+        I am {props.name}, and I am {isHungry ? "hungry" : "full"}!
+      </Text>
+      <Button onPress={() => { setIsHungry(false); }} disabled={!isHungry} title={isHungry ? "Pour me some milk, please!" : "Thank you!"} />
+    </View>
+  );
+}
+
+const PizzaTranslator = () => {
+  const [text, setText] = useState('');
+  return (
+    <View style={{padding: 10}}>
+      <TextInput
+        style={styles.textInputContainer}
+        placeholder="Type here to translate!"
+        onChangeText={newText => setText(newText)}
+        defaultValue={text}
+      />
+      <Text style={{padding: 10, fontSize: 20}}>
+        {text.split(' ').map((word) => word && '🍕').join(' ')}
+      </Text>
+    </View>
+  );
+}
+
+const FlatListBasics = () => {
+  return (
+    <View style={styles.container}>
+      <FlatList
+        data={[
+          {key: 'Devin'},
+          {key: 'Dan'},
+          {key: 'Dominic'},
+          {key: 'Jackson'},
+          {key: 'James'},
+          {key: 'Joel'},
+          {key: 'John'},
+          {key: 'Jillian'},
+          {key: 'Jimmy'},
+          {key: 'Julie'},
+        ]}
+        renderItem={({item}) => <Text style={styles.item}>{item.key}</Text>}
+      />
+    </View>
+  );
+}
+
+const SectionListBasics = () => {
+  return (
+    <View style={styles.container}>
+      <SectionList
+        sections={[
+          {title: 'D', data: ['Devin', 'Dan', 'Dominic']},
+          {title: 'J', data: ['Jackson', 'James', 'Jillian', 'Jimmy', 'Joel', 'John', 'Julie']},
+        ]}
+        renderItem={({item}) => <Text style={styles.item}>{item}</Text>}
+        renderSectionHeader={({section}) => <Text style={styles.sectionHeader}>{section.title}</Text>}
+        keyExtractor={(item, index) => `basicListEntry-${item.title}`}
+      />
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  viewContainer: {
+    marginTop: 50,
+    flex: 1,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  imageContainer: { width: 200, height: 200 },
+  textInputContainer: {
+    width: 150,
+    height: 40,
+    margin: 10,
+    padding: 5,
+    borderColor: 'gray',
+    borderWidth: 2
+  },
+  container: {
+    flex: 1,
+    paddingTop: 22
+   },
+   sectionHeader: {
+     paddingTop: 2,
+     paddingLeft: 10,
+     paddingRight: 10,
+     paddingBottom: 2,
+     fontSize: 14,
+     fontWeight: 'bold',
+     backgroundColor: 'rgba(247,247,247,1.0)',
+   },
+   item: {
+     padding: 10,
+     fontSize: 18,
+     height: 44,
+   }
+});
